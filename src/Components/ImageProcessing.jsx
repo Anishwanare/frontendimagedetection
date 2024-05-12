@@ -14,13 +14,12 @@ const ImageProcessing = () => {
   const modelRef = useRef();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     // Load the COCO-SSD model
     loadModel();
   }, []);
 
-  //from tensorflow.js
+  //from tensorflow.js 
   const loadModel = async () => {
     try {
       const model = await cocossd.load();
@@ -36,10 +35,11 @@ const ImageProcessing = () => {
     navigate("/userauth");
   };
 
+
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     setImage(file);
-    setAnnotations([]);
+    setAnnotations([]); 
   };
 
   //arrow function when click on generate image
@@ -55,6 +55,7 @@ const ImageProcessing = () => {
 
   const handleOnSubmit = async () => {
     try {
+      setLoading(true);
       if (!image) {
         console.log("Image Not Selected");
         alert("Image not selected");
@@ -75,17 +76,15 @@ const ImageProcessing = () => {
       );
 
       const dataRes = await result.data;
-      if (dataRes.status) {
-        alert(dataRes.message);
-      }
+      alert(dataRes.message);
       console.log(result);
+      setLoading(false)
     } catch (error) {
       console.log("Server error in imageprocessing.js", error);
     }
 
     //after every upload it will refrsh page
-
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
