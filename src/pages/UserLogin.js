@@ -12,6 +12,9 @@ const UserLogin = () => {
     password: "",
   });
 
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [registerLoading, setRegisterLoading] = useState(false);
+
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
@@ -24,6 +27,7 @@ const UserLogin = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setLoginLoading(true);
     const { email, password } = loginData;
     if (email && password) {
       try {
@@ -42,13 +46,15 @@ const UserLogin = () => {
         console.log("Error during login:", error);
         alert("An unexpected error occurred. Please try again later.");
       }
-      } else {
-        alert("Please fill in all the fields.");
+      setLoginLoading(false);
+    } else {
+      alert("Please fill in all the fields.");
     }
   };
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+    setRegisterLoading(true);
     const { email, password, name } = registerData;
     if (email && name && password) {
       try {
@@ -60,8 +66,9 @@ const UserLogin = () => {
         alert(data.message);
       } catch (error) {
         console.error("Error during registration:", error);
-        alert("An unexpected error occurred. Please try again later.");
+        alert("An unexpected error occurred. Please try again later.", error);
       }
+      setRegisterLoading(false);
     } else {
       alert("Please fill in all the fields.");
     }
@@ -73,6 +80,13 @@ const UserLogin = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+      {loginLoading && (
+        <div className="absolute top-0 right-0 mt-10 mr-10">Loading...</div>
+      )}
+
+      {registerLoading && (
+        <div className="absolute top-0 right-0 mt-10 mr-10">Loading...</div>
+      )}
       <h1 className="absolute top-10 text-3xl font-semibold bg-green-400 p-3 rounded-xl shadow-2xl">
         Welcome To image annotation Application
       </h1>
